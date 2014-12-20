@@ -2,11 +2,31 @@
 var data = [[50, 150],[1000, 1200],[100, 800]];
 var playerData = [[400,400]];
 
+var scoreData = [0];
+var highData = [0];
+var collisionData = [0];
 
 var svg = d3.select('#gameArea').append('svg')
   .attr('width', 800)
   .attr("height", 800);
 
+var score = d3.select('.current').select('span')
+  .data(scoreData)
+  .text(function(d){
+    return d;
+  });
+
+var highScore = d3.select('.high').select('span')
+  .data(highData)
+  .text(function(d){
+    return d;
+  });
+
+var collisionScore = d3.select('.collisions').select('span')
+  .data(collisionData)
+  .text(function(d){
+    return d;
+  });
 
 var drag = d3.behavior.drag().on('drag', function(d){
   d3.select(this)
@@ -39,7 +59,21 @@ var collision = function(){
 
     var distance = Math.pow(Math.abs(px - ex), 2) + Math.pow(Math.abs(py - ey), 2);
     if(distance < r2){
-      console.log('collision');
+      if(scoreData[0] > highData[0]){
+        highData[0] = scoreData[0];
+          highScore
+          .data(highData)
+          .text(function(d){
+            return d;
+          });
+      }
+      scoreData[0] = 0;
+      collisionData[0]++;
+      collisionScore
+      .data(collisionData)
+      .text(function(d){
+        return d;
+      });
     }
   }
 }
@@ -61,7 +95,7 @@ var update = function(data){
 svg.selectAll('.circle')
     .transition()
     .attrTween('cx', function(d){
-      var interpolator = d3.interpolate(d[0], Math.floor(Math.random() * 700 ) + 50)
+      var interpolator = d3.interpolate(d[0], Math.floor(Math.random() * 700 ) + 50);
       return function (t){
         d[0] = interpolator(t);
         //console.log("this is happening.");
@@ -88,6 +122,15 @@ setInterval(function(){
 setInterval(function(){
   collision();
 }, 10);
+
+setInterval(function(){
+  scoreData[0] += 1;
+  score
+  .data(scoreData)
+  .text(function(d){
+    return d;
+  });
+}, 100);
 
 
 
