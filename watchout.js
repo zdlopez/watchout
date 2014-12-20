@@ -9,15 +9,11 @@ var svg = d3.select('#gameArea').append('svg')
 
 
 var drag = d3.behavior.drag().on('drag', function(d){
-  //console.log(d);
   d3.select(this)
-    // .data([d[0], d[1]])
     .attr('cy', d3.event.y)
     .attr('cx', d3.event.x);
     playerData[0] = d3.event.x;
     playerData[1] = d3.event.y;
-  //console.log(this.data());
-
   });
 
 svg.selectAll('#player')
@@ -32,38 +28,32 @@ svg.selectAll('#player')
   .call(drag);
 
 var collision = function(){
-  //var player = svg.select('#player');
-  // console.log(playerData);
-  // console.log(data);
+  // var cx = d3.selectAll('.circle')
+  //   .attr('cx');
+  // var cy = d3.selectAll('.circle')
+  //   .attr('cy');
 
-  // var top = playerData[1] - 40;
-  // var bottom = playerData[1] + 40;
-  // var right = playerData[0] + 40;
-  // var left = playerData[0] - 40;
+  var arrEnemy = d3.selectAll('.circle');
+  console.log(arrEnemy[0]);
 
-  // for (var enemy = 0; enemy < data.length; enemy++){
-  //   var etop =data[enemy][1] - 40;
-  //   var ebottom = data[enemy][1] + 40;
-  //   var eright = data[enemy][0] + 40;
-  //   var eleft = data[enemy][0] - 40;
+    // console.log(arrEnemy);
+
+  // console.log('cx is: ' + cx + 'cy is : ' + cy);
 
   var px = playerData[0];
   var py = playerData[1];
   var r2 = Math.pow((40*2), 2);
 
   for(var enemy = 0; enemy < data.length; enemy++){
-    var ex = data[enemy][0];
-    var ey = data[enemy][1];
+    var ex = arrEnemy[0][enemy].attr('cx');
+    var ey = arrEnemy[0][enemy].attr('cy');
 
     var distance = Math.pow(Math.abs(px - ex), 2) + Math.pow(Math.abs(py - ey), 2);
     if(distance < r2){
       console.log('collision');
     }
-
   }
-
 }
-
 
 var update = function(data){
 
@@ -94,6 +84,8 @@ function randomizer(array) {
     array[i][0] = Math.floor(Math.random() * m ) + 50;
     array[i][1] = Math.floor(Math.random() * m) + 50;
   }
+
+
   return array;
 }
 
@@ -104,7 +96,7 @@ setInterval(function(){
 
 setInterval(function(){
   collision();
-}, 50);
+}, 1500);
 
 
 
