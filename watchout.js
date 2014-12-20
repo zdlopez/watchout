@@ -5,12 +5,24 @@ var svg = d3.select('#gameArea').append('svg')
   .attr('width', 800)
   .attr("height", 800);
 
+svg.selectAll('#player')
+  .data([[400,400]])
+  .enter()
+  .append('circle')
+  .attr('r', 40 + 'px')
+  .style('fill', 'blue')
+  .style('stroke', 'gray')
+  .attr('cx', function(d,i){ return d[0] })
+  .attr('cy', function(d,i){ return d[1] })
+  .transition();
+
 var update = function(data){
 
-  svg.selectAll('circle')
+  svg.selectAll('.circle')
     .data(data)
     .enter()
     .append('circle')
+    .attr('class', 'circle')
     .attr('r', 40 + 'px')
     .style('fill', 'red')
     .style('stroke', 'gray')
@@ -18,7 +30,7 @@ var update = function(data){
     .attr('cy', function(d,i){ return d[1] })
     .transition();
 
-svg.selectAll('circle')
+svg.selectAll('.circle')
     .transition()
     .attr('cx', function(d,i){ return d[0] })
     .attr('cy', function(d,i){ return d[1] });
@@ -30,8 +42,8 @@ update(randomizer(data));
 function randomizer(array) {
   var m = 700;
   for (var i=0; i<array.length; i++){
-    array[i][0] = Math.floor(Math.random() * m);
-    array[i][1] = Math.floor(Math.random() * m);
+    array[i][0] = Math.floor(Math.random() * m ) + 50;
+    array[i][1] = Math.floor(Math.random() * m) + 50;
   }
   return array;
 }
