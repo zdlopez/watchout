@@ -87,7 +87,7 @@ setInterval(function(){
 
 setInterval(function(){
   collision();
-}, 50);
+}, 10);
 
 
 
