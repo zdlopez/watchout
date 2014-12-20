@@ -6,9 +6,14 @@ var scoreData = [0];
 var highData = [0];
 var collisionData = [0];
 
+var gameArea = d3.select('#gameArea')
+  .style('border', '1px solid black')
+  .style('width', "800px")
+  .style('height', "800px");
+
 var svg = d3.select('#gameArea').append('svg')
   .attr('width', 800)
-  .attr("height", 800);
+  .attr('height', 800);
 
 var score = d3.select('.current').select('span')
   .data(scoreData)
@@ -30,10 +35,14 @@ var collisionScore = d3.select('.collisions').select('span')
 
 var drag = d3.behavior.drag().on('drag', function(d){
   d3.select(this)
-    .attr('cy', d3.event.y)
-    .attr('cx', d3.event.x);
-    playerData[0] = d3.event.x;
-    playerData[1] = d3.event.y;
+    .attr('cy', d3.event.y > 50 && d3.event.y < 750 ?
+      d3.event.y : d3.event.y < 50 ? 50 : 750)
+    .attr('cx', d3.event.x > 50 && d3.event.x < 750 ?
+      d3.event.x : d3.event.x < 50 ? 50 : 750);
+    playerData[0] = d3.event.x > 50 && d3.event.x < 750 ?
+      d3.event.x : d3.event.x < 50 ? 50 : 750;
+    playerData[1] = d3.event.y > 50 && d3.event.y < 750 ?
+      d3.event.y : d3.event.y < 50 ? 50 : 750;
   });
 
 svg.selectAll('#player')
