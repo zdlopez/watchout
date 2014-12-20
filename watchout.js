@@ -5,6 +5,12 @@ var svg = d3.select('#gameArea').append('svg')
   .attr('width', 800)
   .attr("height", 800);
 
+var drag = d3.behavior.drag().on('drag', function(d){
+  d3.select(this)
+    .attr('cy', d3.event.y)
+    .attr('cx', d3.event.x)
+  });
+
 svg.selectAll('#player')
   .data([[400,400]])
   .enter()
@@ -14,7 +20,8 @@ svg.selectAll('#player')
   .style('stroke', 'gray')
   .attr('cx', function(d,i){ return d[0] })
   .attr('cy', function(d,i){ return d[1] })
-  .transition();
+  .call(drag);
+
 
 var update = function(data){
 
