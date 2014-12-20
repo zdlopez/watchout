@@ -28,25 +28,14 @@ svg.selectAll('#player')
   .call(drag);
 
 var collision = function(){
-  // var cx = d3.selectAll('.circle')
-  //   .attr('cx');
-  // var cy = d3.selectAll('.circle')
-  //   .attr('cy');
-
-  var arrEnemy = d3.selectAll('.circle');
-  console.log(arrEnemy[0]);
-
-    // console.log(arrEnemy);
-
-  // console.log('cx is: ' + cx + 'cy is : ' + cy);
 
   var px = playerData[0];
   var py = playerData[1];
   var r2 = Math.pow((40*2), 2);
 
   for(var enemy = 0; enemy < data.length; enemy++){
-    var ex = arrEnemy[0][enemy].attr('cx');
-    var ey = arrEnemy[0][enemy].attr('cy');
+    var ex = data[enemy][0];
+    var ey = data[enemy][1];
 
     var distance = Math.pow(Math.abs(px - ex), 2) + Math.pow(Math.abs(py - ey), 2);
     if(distance < r2){
@@ -71,32 +60,34 @@ var update = function(data){
 
 svg.selectAll('.circle')
     .transition()
-    .attr('cx', function(d,i){ return d[0] })
-    .attr('cy', function(d,i){ return d[1] });
+    .attrTween('cx', function(d){
+      var interpolator = d3.interpolate(d[0], Math.floor(Math.random() * 700 ) + 50)
+      return function (t){
+        d[0] = interpolator(t);
+        //console.log("this is happening.");
+        return d[0];
+      }
+    })
+    .attrTween('cy', function(d){
+      var interpolator = d3.interpolate(d[1], Math.floor(Math.random() * 700 ) + 50)
+      return function (t){
+        d[1] = interpolator(t);
+        //console.log("this is happening.");
+        return d[1];
+      }
+    });
 
 }
 
-update(randomizer(data));
-
-function randomizer(array) {
-  var m = 700;
-  for (var i=0; i<array.length; i++){
-    array[i][0] = Math.floor(Math.random() * m ) + 50;
-    array[i][1] = Math.floor(Math.random() * m) + 50;
-  }
-
-
-  return array;
-}
 
 setInterval(function(){
   // collision();
-  return update(randomizer(data))
+  return update(data)
 }, 1500);
 
 setInterval(function(){
   collision();
-}, 1500);
+}, 50);
 
 
 
