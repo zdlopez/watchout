@@ -13,5 +13,10 @@ transform-origin: 50% 50% 0;
     100% { -webkit-transform: rotate(360deg); }
 }
 
+#gameArea {
+  background-image: url('dojo2.jpeg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
 
 
