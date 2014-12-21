@@ -1,5 +1,6 @@
 // start slingin' some d3 here.
 var data = [[50, 150],[1000, 1200],[100, 800]];
+var ninjaData = [[100,100],[200,100],[100,300]];
 var playerData = [[400,400]];
 
 var scoreData = [0];
@@ -56,6 +57,7 @@ svg.selectAll('#player')
   .attr('cy', function(d,i){ return d[1] })
   .call(drag);
 
+
 var collision = function(){
 
   var px = playerData[0];
@@ -107,7 +109,6 @@ svg.selectAll('.circle')
       var interpolator = d3.interpolate(d[0], Math.floor(Math.random() * 700 ) + 50);
       return function (t){
         d[0] = interpolator(t);
-        //console.log("this is happening.");
         return d[0];
       }
     })
@@ -115,22 +116,53 @@ svg.selectAll('.circle')
       var interpolator = d3.interpolate(d[1], Math.floor(Math.random() * 700 ) + 50)
       return function (t){
         d[1] = interpolator(t);
-        //console.log("this is happening.");
         return d[1];
       }
     });
+
+  svg.selectAll('image')
+    .data(ninjaData)
+    .enter()
+    .append('svg:image')
+    .attr('width', 80)
+    .attr('height', 80)
+    .attr('xlink:href', 'shuriken-icon.png')
+    .attr('class', 'ninja')
+    .attr('x', function(d,i){ return d[0] })
+    .attr('y', function(d,i){ return d[1] })
+    .transition();
+
+//    .duration(2000)
+    // .attrTween("transform", function(d,i){
+    //   return d3.interpolateString("rotate(-60, 150, 130)", "rotate(60, 150, 130)")
+    // });
+
+  svg.selectAll('image')
+      .transition()
+      .attrTween('x', function(d){
+        var interpolator = d3.interpolate(d[0], Math.floor(Math.random() * 700 ) + 50);
+        return function (t){
+          d[0] = interpolator(t);
+          return d[0];
+        }
+      })
+      .attrTween('y', function(d){
+        var interpolator = d3.interpolate(d[1], Math.floor(Math.random() * 700 ) + 50)
+        return function (t){
+          d[1] = interpolator(t);
+          return d[1];
+        }
+      });
 
 }
 
 
 setInterval(function(){
-  // collision();
   return update(data)
 }, 1500);
 
-setInterval(function(){
-  collision();
-}, 10);
+
+d3.timer(collision);
 
 setInterval(function(){
   scoreData[0] += 1;
